@@ -48,4 +48,7 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+	/// 
+	uint32_t textureHundle_ = 0;
+	Sprite* sprite_ = nullptr;
 };
