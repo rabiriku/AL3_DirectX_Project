@@ -8,12 +8,12 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
 class GameScene {
-
 public: // メンバ関数
 	/// <summary>
 	/// コンストクラタ
@@ -50,5 +50,13 @@ private: // メンバ変数
 	/// </summary>
 	/// 
 	uint32_t textureHundle_ = 0;
+	uint32_t soundDataHandle_ = 0;
+	Model* model_ = nullptr;
 	Sprite* sprite_ = nullptr;
+	WorldTransform worldTransform_;
+	ViewProjection ViewProjection_;
+
+	float inputFloat3[3] = {0, 0, 0};
+
+	DebugCamera* debugCamera_ = nullptr;
 };
