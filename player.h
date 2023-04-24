@@ -1,15 +1,18 @@
 #pragma once
-#include"GameScene.h"
+#include "Model.h"
+#include"ViewProjection.h"
+#include"WorldTransform.h"
+
 class Player {
 public:
 
-void initialize();
+void initialize(Model* model, uint32_t textureHandle);
 
 
 void update();
 
 
-void Draw();
+void Draw(ViewProjection&viewProjection);
 
 private:
 
@@ -19,5 +22,5 @@ Model* model_ = nullptr;
 
 uint32_t textureHundle_=0u;
 
-Player* player_ = nullptr;
+
 };
