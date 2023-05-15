@@ -36,10 +36,10 @@ void Player::Update() {
 	// 旋回
 	const float matRotSpeed = 0.02f;
 	if (input_->PushKey(DIK_A)) {
-		worldTransform_.rotation_.y -= matRotSpeed;
+		worldTransform_.rotation_.x-= matRotSpeed;
 	}
 	if (input_->PushKey(DIK_D)) {
-		worldTransform_.rotation_.y += matRotSpeed;
+		worldTransform_.rotation_.x+= matRotSpeed;
 	}
 
 	// 攻撃

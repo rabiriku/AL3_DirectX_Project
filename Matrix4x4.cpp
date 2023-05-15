@@ -69,7 +69,7 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	Matrix4x4 matRotY = MakeRotationXMatrix(rot.y);
 	Matrix4x4 matRotZ = MakeRotationXMatrix(rot.z);
 	// 合成(Z * X * Y)
-	Matrix4x4 matRot = matRotZ * matRotX * matRotY;
+	Matrix4x4 matRot = matRotX* matRotY * matRotZ;
 
 	// 平行移動行列
 	Matrix4x4 matTrans = MakeTranslateMatrix(trans);
