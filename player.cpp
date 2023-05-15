@@ -27,11 +27,15 @@ void Player::Update() {
 		move.x -= kCharacterSpeed;
 	} else if (input_->PushKey(DIK_RIGHT)) {
 		move.x += kCharacterSpeed;
+	} else if(input_->PushKey(DIK_UP)) {
+		move. y+= kCharacterSpeed;
+	} else if (input_->PushKey(DIK_DOWN)) {
+		move.y -= kCharacterSpeed;
 	}
 
 	// 範囲制限
-	const float kMoveLimitX = 20.0f;
-	const float kMoveLimitY = 20.0f;
+	const float kMoveLimitX = 30.0f;
+	const float kMoveLimitY = 18.0f;
 
 	// 範囲を超えない処理
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
