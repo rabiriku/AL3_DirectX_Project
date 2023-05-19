@@ -10,6 +10,7 @@
 #include "Input.h"
 #include "PlayerBullet.h"
 #include <list>
+#include "MathUtility.h"
 
 class Player {
 public:

@@ -2,6 +2,13 @@
 #include "ImGui.h"
 #include <cassert>
 
+
+Player::~Player() {
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
+}
+
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	// NULLポインタチェック
 	assert(model);
@@ -36,10 +43,10 @@ void Player::Update() {
 	// 旋回
 	const float matRotSpeed = 0.02f;
 	if (input_->PushKey(DIK_A)) {
-		worldTransform_.rotation_.x-= matRotSpeed;
+		worldTransform_.rotation_.y-= matRotSpeed;
 	}
 	if (input_->PushKey(DIK_D)) {
-		worldTransform_.rotation_.x+= matRotSpeed;
+		worldTransform_.rotation_.y+= matRotSpeed;
 	}
 
 	// 攻撃
@@ -98,19 +105,18 @@ void Player::Draw(ViewProjection& viewProjection) {
 
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
-	
+		//弾の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+
+		velocity = TransformNormal(velocity,worldTransform_.matWorld_);
+
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}
 }
 
-Player::~Player() {
-	for (PlayerBullet* bullet : bullets_) {
-		delete bullet;
-	}
-
-}
