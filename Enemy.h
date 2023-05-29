@@ -8,7 +8,7 @@
 /// </summary>
 class Enemy {
 public:
-	void Initialize(Model* model, const Vector3& pos, const Vector3& velocity);
+	void Initialize(Model* model, const Vector3& pos);
 	void Update();
 	void Draw(ViewProjection& view);
 
@@ -16,8 +16,5 @@ public:
 	WorldTransform world_;
 	Model* model_;
 	uint32_t texturehandle_;
-	Vector3 velocity_;
-
-
 
 };
