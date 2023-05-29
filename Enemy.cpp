@@ -1,4 +1,4 @@
-#include "Enemy.h"
+﻿#include "Enemy.h"
 #include <cassert>
 #include"WorldTransform.h"
 
@@ -13,8 +13,25 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 }
 
 void Enemy::Update() {
-	world_.translation_.z -= 0.3f;
+	const float KCharaSpeed = -0.2f;
 	world_.UpdateMatrix();
+
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		//移動
+		world_.translation_.z += KCharaSpeed;
+
+		if (world_.translation_.z < 0.0f) {
+			phase_ = Phase::Leave;
+		}
+		break;
+
+	case Phase::Leave:
+		//移動
+		world_.translation_.x += KCharaSpeed;
+		break;
+	}
 	
 }
 
