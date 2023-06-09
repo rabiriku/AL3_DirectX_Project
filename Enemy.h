@@ -3,6 +3,11 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+
+#include "Input.h"
+#include "EnemyBullet.h"
+#include <list>
+#include "MathUtility.h"
 /// <summary>
 /// 敵
 /// </summary>
@@ -17,10 +22,17 @@ public:
 	void Initialize(Model* model, const Vector3& pos);
 	void Update();
 	void Draw(ViewProjection& view);
+	void Fire();
 	Phase phase_ = Phase::Approach; 
-	
+	~Enemy();
+	static const int kFireInterval = 60;
+	void Approach();
+
 	private:
-	WorldTransform world_;
+	WorldTransform worldTransform_;
 	Model* model_;
-	uint32_t texturehandle_;
+	uint32_t texturehandle_ = 0u;
+	EnemyBullet* bullet_ = nullptr;
+	std::list<EnemyBullet*> bullets_;
+	int32_t pushTimer = 0;
 };

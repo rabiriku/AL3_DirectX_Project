@@ -4,8 +4,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-class PlayerBullet {
-public:
+class EnemyBullet {
+	public:
 	void Initialize(Model* model, const Vector3& pos, const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection& view);
@@ -19,5 +19,6 @@ private:
 	static const int32_t kLifeTime = 60 * 5;
 	int32_t deathTimer_ = kLifeTime;
 	bool isDead_ = false;
-	
+
+
 };
