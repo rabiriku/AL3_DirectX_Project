@@ -24,14 +24,14 @@ void Enemy::Update() {
 		return false;
 	});
 
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
-
 	pushTimer--;
 	if (pushTimer <= 0) {
 		Fire();
 		pushTimer = kFireInterval;
+	}
+
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 
 	const float KCharaSpeed = -0.2f;
