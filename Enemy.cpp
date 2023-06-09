@@ -24,6 +24,16 @@ void Enemy::Update() {
 		return false;
 	});
 
+		pushTimer--;
+	if (pushTimer <= 0) {
+		Fire();
+		pushTimer = kFireInterval;
+	}
+
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
 	const float KCharaSpeed = -0.2f;
 	worldTransform_.UpdateMatrix();
 
@@ -31,15 +41,8 @@ void Enemy::Update() {
 	case Phase::Approach:
 	default:
 
-		for (EnemyBullet* bullet : bullets_) {
-			bullet->Update();
-		}
+	
 
-		pushTimer--;
-		if (pushTimer <= 0) {
-			Fire();
-			pushTimer = kFireInterval;
-		}
 		//移動
 		worldTransform_.translation_.z += KCharaSpeed;
 
