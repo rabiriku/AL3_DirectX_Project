@@ -8,6 +8,9 @@
 #include "EnemyBullet.h"
 #include <list>
 #include "MathUtility.h"
+
+//class Player;
+//Player* player_ = nullptr;
 /// <summary>
 /// 敵
 /// </summary>
@@ -23,6 +26,7 @@ public:
 	void Update();
 	void Draw(ViewProjection& view);
 	void Fire();
+	//void SetPlayer(Player* player) { player_ = player; }
 	Phase phase_ = Phase::Approach; 
 	~Enemy();
 	static const int kFireInterval = 60;

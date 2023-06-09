@@ -15,7 +15,7 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 }
 
 void Enemy::Update() {
-
+	
 	bullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->IsDead()) {
 			delete bullet;
@@ -24,22 +24,24 @@ void Enemy::Update() {
 		return false;
 	});
 
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
+	pushTimer--;
+	if (pushTimer <= 0) {
+		Fire();
+		pushTimer = kFireInterval;
+	}
+
 	const float KCharaSpeed = -0.2f;
 	worldTransform_.UpdateMatrix();
 
+	
 	switch (phase_) {
 	case Phase::Approach:
 	default:
 
-		for (EnemyBullet* bullet : bullets_) {
-			bullet->Update();
-		}
-
-		pushTimer--;
-		if (pushTimer <= 0) {
-			Fire();
-			pushTimer = kFireInterval;
-		}
 		//移動
 		worldTransform_.translation_.z += KCharaSpeed;
 
@@ -52,16 +54,7 @@ void Enemy::Update() {
 	case Phase::Leave:
 		//移動
 		worldTransform_.translation_.z -= KCharaSpeed;
-		for (EnemyBullet* bullet : bullets_) {
-			bullet->Update();
-		}
-
-		pushTimer--;
-		if (pushTimer <= 0) {
-			Fire();
-			pushTimer = kFireInterval;
-		}
-
+		
 		if (worldTransform_.translation_.z > 30.0f) {
 			phase_ = Phase::Approach;
 		}
