@@ -10,6 +10,7 @@ GameScene::~GameScene() {
 	delete player_;
 	delete enemy_;
 	delete debugCamera_;
+	delete modelSkydome_;
 }
 
 void GameScene::Initialize() {
@@ -41,6 +42,11 @@ void GameScene::Initialize() {
 	//	敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 
+	//天球生成
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	skydome_ = new Skydome();
+	skydome_->Initialize(modelSkydome_);
+
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
@@ -57,6 +63,10 @@ void GameScene::Update() {
 	//敵キャラの更新
 	enemy_->Update();
 	CheckAllCollisions();
+
+	//天球更新
+	skydome_->Update();
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_BACKSPACE)) {
 		isDebugCameraActive_ = true;
@@ -106,6 +116,9 @@ void GameScene::Draw() {
 
 	//敵キャラの描画
 	enemy_->Draw(viewProjection_);
+
+	//天球の描画
+	skydome_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
