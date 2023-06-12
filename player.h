@@ -41,6 +41,8 @@ public:
 
 	std::list<PlayerBullet*> bullets_;
 
+	Vector3 GetworldPosition();
+
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;

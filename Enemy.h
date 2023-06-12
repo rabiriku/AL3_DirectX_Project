@@ -9,8 +9,7 @@
 #include <list>
 #include "MathUtility.h"
 
-//class Player;
-//Player* player_ = nullptr;
+class Player;
 /// <summary>
 /// 敵
 /// </summary>
@@ -26,11 +25,14 @@ public:
 	void Update();
 	void Draw(ViewProjection& view);
 	void Fire();
-	//void SetPlayer(Player* player) { player_ = player; }
+	Player* player_ = nullptr;
+	void SetPlayer(Player* player) { player_ = player; }
 	Phase phase_ = Phase::Approach; 
 	~Enemy();
 	static const int kFireInterval = 60;
 	void Approach();
+	Vector3 GetworldPosition();
+
 
 	private:
 	WorldTransform worldTransform_;

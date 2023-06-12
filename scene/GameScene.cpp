@@ -39,7 +39,7 @@ void GameScene::Initialize() {
 	enemy_->Initialize(model_, {30.0f, 0.0f, 60.0f});
 
 	//	敵キャラに自キャラのアドレスを渡す
-	//enemy_->SetPlayer(player_);
+	enemy_->SetPlayer(player_);
 
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);

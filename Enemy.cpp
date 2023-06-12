@@ -2,6 +2,7 @@
 #include<assert.h>
 #include "ImGuiManager.h"
 #include "MathUtility.h"
+#include "player.h"
 
 
 void Enemy::Initialize(Model* model, const Vector3& pos) {
@@ -73,10 +74,23 @@ void Enemy::Draw(ViewProjection& view) {
 }
 
 void Enemy::Fire() {
-	const float kBulletSpeed = -2.0f;
-	Vector3 velocity(0, 0, kBulletSpeed);
+	assert(player_);
 
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	const float kBulletSpeed = -2.0f;
+
+	// 敵キャラ→自キャラの差分ベクトルを求める
+	Vector3 distance;
+	distance.x = GetworldPosition().x - player_->GetworldPosition().x;
+	distance.y = GetworldPosition().y - player_->GetworldPosition().y;
+	distance.z = GetworldPosition().z - player_->GetworldPosition().z;
+
+	// ベクトルの正規化
+	float length =
+		sqrt((distance.x * distance.x) + (distance.y * distance.y) + (distance.z * distance.z));
+	Vector3 dir(distance.x / length, distance.y / length, distance.z / length);
+
+	// ベクトルの長さを、早さに合わせる
+	Vector3 velocity(dir.x * kBulletSpeed, dir.y * kBulletSpeed, dir.z * kBulletSpeed);
 
 	// 弾を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();
@@ -89,6 +103,16 @@ void Enemy::Fire() {
 
 void Enemy::Approach() { pushTimer = kFireInterval; }
 
+Vector3 Enemy::GetworldPosition() {
+
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+}
 Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;

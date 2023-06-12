@@ -9,6 +9,8 @@ Player::~Player() {
 	}
 }
 
+
+
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	// NULLポインタチェック
 	assert(model);
@@ -23,6 +25,16 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 }
+
+Vector3 Player::GetworldPosition() { 
+	
+	Vector3 worldPos;
+
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+	
+	return worldPos; }
 
 void Player::Update() {
 	bullets_.remove_if([] (PlayerBullet * bullet) {
