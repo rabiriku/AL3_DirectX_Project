@@ -34,7 +34,10 @@ Vector3 Player::GetworldPosition() {
 	worldPos.y = worldTransform_.translation_.y;
 	worldPos.z = worldTransform_.translation_.z;
 	
-	return worldPos; }
+	return worldPos;
+}
+
+void Player::OnCollision() {}
 
 void Player::Update() {
 	bullets_.remove_if([] (PlayerBullet * bullet) {

@@ -113,6 +113,8 @@ Vector3 Enemy::GetworldPosition() {
 
 	return worldPos;
 }
+void Enemy::OnCollision() {}
+
 Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;

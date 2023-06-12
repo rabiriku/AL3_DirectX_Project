@@ -39,11 +39,21 @@ public:
 	/// </summary>
 	~Player();
 
+	//リスト化
 	std::list<PlayerBullet*> bullets_;
 
+	//position取得
 	Vector3 GetworldPosition();
 
-private:
+	//衝突を検知したら呼び出される
+	void OnCollision();
+
+	
+	const float GetRadius() { return radius_; }
+
+	const std::list<PlayerBullet*>& GetBullrts() const { return bullets_; }
+
+
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 
@@ -59,4 +69,5 @@ private:
 	// 弾
 	PlayerBullet* bullet_ = nullptr;
 	
+	const float radius_ = 1.0f;
 };
