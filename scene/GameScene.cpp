@@ -11,6 +11,7 @@ GameScene::~GameScene() {
 	delete enemy_;
 	delete debugCamera_;
 	delete modelSkydome_;
+	delete railcamera_;
 }
 
 void GameScene::Initialize() {
@@ -33,19 +34,25 @@ void GameScene::Initialize() {
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
-	player_->Initialize(model_, textureHandle_);
+	//player_->Initialize(model_, textureHandle_);
 
-	//敵キャラの生成
-	enemy_ = new Enemy(); 
+	// 敵キャラの生成
+	enemy_ = new Enemy();
 	enemy_->Initialize(model_, {30.0f, 0.0f, 60.0f});
 
 	//	敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 
-	//天球生成
+	// 天球生成
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_);
+
+
+	// 自機をカメラからずらす
+	Vector3 playerPosition(0, 0, 50.0f);
+	player_->Initialize(model_, textureHandle_, playerPosition);
+	
 
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
@@ -54,6 +61,13 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetVisible(true);
 	// 軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
+	// レールカメラ生成
+	railcamera_ = new RailCamera();
+	railcamera_->Initialize({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
+
+	// 自キャラとレールカメラの親子関係
+	player_->SetParent(&railcamera_->GetWorldTransform());
 }
 
 void GameScene::Update() {
@@ -67,6 +81,9 @@ void GameScene::Update() {
 	//天球更新
 	skydome_->Update();
 
+	//レールカメラ更新
+	railcamera_->Update();
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_BACKSPACE)) {
 		isDebugCameraActive_ = true;
@@ -78,9 +95,11 @@ void GameScene::Update() {
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
-	} else {
-		viewProjection_.UpdateMatrix();
-	}
+	} else if (!isDebugCameraActive_) {
+			viewProjection_.matView = railcamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = railcamera_->GetViewProjection().matProjection;
+			viewProjection_.TransferMatrix();
+		}
 }
 
 void GameScene::Draw() {

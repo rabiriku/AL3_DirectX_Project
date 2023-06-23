@@ -11,7 +11,7 @@ Player::~Player() {
 
 
 
-void Player::Initialize(Model* model, uint32_t textureHandle) {
+void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 playerPosition) {
 	// NULLポインタチェック
 	assert(model);
 
@@ -24,20 +24,28 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+
+	worldTransform_.translation_.x = playerPosition.x;
+	worldTransform_.translation_.y = playerPosition.y;
+	worldTransform_.translation_.z = playerPosition.z;
 }
 
-Vector3 Player::GetworldPosition() { 
-	
+Vector3 Player::GetworldPosition() {
+
 	Vector3 worldPos;
 
-	worldPos.x = worldTransform_.translation_.x;
-	worldPos.y = worldTransform_.translation_.y;
-	worldPos.z = worldTransform_.translation_.z;
-	
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+
 	return worldPos;
 }
 
 void Player::OnCollision() {}
+
+// 親子関係
+void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
+
 
 void Player::Update() {
 	bullets_.remove_if([] (PlayerBullet * bullet) {
@@ -97,11 +105,7 @@ void Player::Update() {
 	worldTransform_.translation_.z += move.z;
 
 
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-
-	// 行列を定数バッファに転送
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpdateMatrix();
 
 #ifdef _DEBUG
 	// InGui
@@ -133,14 +137,18 @@ void Player::Attack() {
 		const float kBulletSpeed = 1.0f;
 		Vector3 velocity(0, 0, kBulletSpeed);
 
+
 		velocity = TransformNormal(velocity,worldTransform_.matWorld_);
 
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+	
+		newBullet->Initialize(model_, GetworldPosition(), velocity);
+
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}
 }
+
 

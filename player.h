@@ -17,7 +17,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosition);
 
 	/// <summary>
 	/// 更新
@@ -48,7 +48,8 @@ public:
 	//衝突を検知したら呼び出される
 	void OnCollision();
 
-	
+	void SetParent(const WorldTransform* parent);
+
 	const float GetRadius() { return radius_; }
 
 	const std::list<PlayerBullet*>& GetBullrts() const { return bullets_; }
