@@ -102,7 +102,8 @@ private: // メンバ変数
 
 	//敵関連リスト
 	std::list<EnemyBullet*> bullets_;
-	std::list<EnemyBullet*> enemyBullets_;
+	//std::list<EnemyBullet*> enemyBullets_;
+	const std::list<EnemyBullet*>& GetBullrts() const { return bullets_; }
 
 	//敵発生コマンド
 	std::stringstream enemyPopCommands;

@@ -46,10 +46,11 @@ public:
 	// 衝突を検知したら呼び出される
 	void OnCollision();
 
-	const std::list<EnemyBullet*>& GetBullrts() const { return bullets_; }
+	//const std::list<EnemyBullet*>& GetBullrts() const { return bullets_; }
 
 	const float GetRadius() { return radius_; }
 
+	GameScene* gameScene_ = nullptr;
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
 	private:
@@ -57,9 +58,9 @@ public:
 	Model* model_;
 	uint32_t texturehandle_ = 0u;
 	EnemyBullet* bullet_ = nullptr;
-	std::list<EnemyBullet*> bullets_;
+	//std::list<EnemyBullet*> bullets_;
 	int32_t pushTimer = 0;
 	const float radius_ = 1.0f;
-	GameScene* gameScene_ = nullptr;
+	
 
 };

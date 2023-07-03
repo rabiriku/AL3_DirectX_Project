@@ -47,7 +47,8 @@ void GameScene::Initialize() {
 
 	// 敵キャラの生成
 	//enemy_ = new Enemy();
-	//enemy_->SetGameScene(this);
+	
+	//enemy->SetGameScene(this);
 	//// enemy_->Initialize(model_, {30.0f, 0.0f, 60.0f});
 	//	敵キャラに自キャラのアドレスを渡す
 	for (Enemy* enemy : enemy_) {
@@ -219,14 +220,14 @@ void GameScene::CheckAllCollisions() {
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullrts();
 
 	// 敵弾リストの取得
-	// const std::list<EnemyBullet*>& enemyBullets = enemyBullets_;
+	 const std::list<EnemyBullet*>& enemyBullets = bullets_;
 
 #pragma region // 自キャラと敵弾の当たり判定
 	
 	// 自キャラの座標
 	posA = player_->GetworldPosition();
 	// 自キャラと敵弾全ての当たり判定
-	for (EnemyBullet* bullet : enemyBullets_) {
+	for (EnemyBullet* bullet : enemyBullets) {
 		    // 敵弾の座標
 		    posB = bullet->GetworldPosition();
 
@@ -276,7 +277,7 @@ void GameScene::CheckAllCollisions() {
 	for (PlayerBullet* playerBullet : playerBullets) {
 		posA = playerBullet->GetworldPosition();
 		// 敵弾全て
-		for (EnemyBullet* enemyBullet: enemyBullets_) {
+		for (EnemyBullet* enemyBullet: enemyBullets) {
 			posB = enemyBullet->GetworldPosition();
 
 			float distance = (posB.x - posA.x) * (posB.x - posA.x) +
