@@ -96,7 +96,6 @@ void GameScene::Update() {
 	});
 
 		
-
 	// 敵キャラ生成の更新
 	UpdateEnemyPopCommands();
 
