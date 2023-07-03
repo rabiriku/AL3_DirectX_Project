@@ -9,6 +9,8 @@
 #include <list>
 #include "MathUtility.h"
 
+class GameScene;
+
 class Player;
 /// <summary>
 /// 敵
@@ -48,6 +50,8 @@ public:
 
 	const float GetRadius() { return radius_; }
 
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
 	private:
 	WorldTransform worldTransform_;
 	Model* model_;
@@ -56,4 +60,6 @@ public:
 	std::list<EnemyBullet*> bullets_;
 	int32_t pushTimer = 0;
 	const float radius_ = 1.0f;
+	GameScene* gameScene_ = nullptr;
+
 };

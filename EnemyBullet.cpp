@@ -29,7 +29,7 @@ void EnemyBullet::Draw(ViewProjection& view) {
 
 Vector3 EnemyBullet::GetworldPosition() {
 	// ワールド座標を入れる変数
-	Vector3 worldPos;
+	Vector3 worldPos = {};
 
 	worldPos.x = worldTransform_.translation_.x;
 	worldPos.y = worldTransform_.translation_.y;
