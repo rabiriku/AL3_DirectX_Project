@@ -95,6 +95,8 @@ void GameScene::Update() {
 		return false;
 	});
 
+		
+
 	// 敵キャラ生成の更新
 	UpdateEnemyPopCommands();
 
@@ -102,12 +104,12 @@ void GameScene::Update() {
 	for (Enemy* enemy : enemy_) {
 		    enemy->Update();
 	}
-	CheckAllCollisions();
 
 	for (EnemyBullet* bullet : bullets_) {
 		        bullet->Update();
 	}
 
+	CheckAllCollisions();
 	//天球更新
 	skydome_->Update();
 
@@ -234,8 +236,7 @@ void GameScene::CheckAllCollisions() {
 		                     (posB.z - posA.z) * (posB.z - posA.z);
 
 		    // 球と球の交差判定
-		    if (distance <= (player_->GetRadius() + bullet->GetRadius()) *
-		                        (player_->GetRadius() + bullet->GetRadius())) {
+		    if (distance <= (player_->GetRadius() + bullet->GetRadius()) *(player_->GetRadius() + bullet->GetRadius())) {
 			    // 自キャラの衝突時コールバックを呼び出す
 			    player_->OnCollision();
 			    // 敵弾の衝突時コールバックを呼び出す
@@ -261,8 +262,7 @@ void GameScene::CheckAllCollisions() {
 			                 (posB.z - posA.z) * (posB.z - posA.z);
 
 			// 球と球の交差判定
-			if (distance <= (enemy->GetRadius() + bullet->GetRadius()) *
-			                    (enemy->GetRadius() + bullet->GetRadius())) {
+			if (distance <= (enemy->GetRadius() + bullet->GetRadius()) * (enemy->GetRadius() + bullet->GetRadius())) {
 				// 敵キャラの衝突時コールバックを呼び出す
 				enemy->OnCollision();
 				// 敵弾の衝突時コールバックを呼び出す
