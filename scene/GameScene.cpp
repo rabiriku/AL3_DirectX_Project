@@ -81,11 +81,14 @@ void GameScene::Initialize() {
 	player_->SetParent(&railcamera_->GetWorldTransform());
 
 	LoadEnemyPopDate();
+
+	//レティクルのテクスチャ
+	 TextureManager::Load("target.png");
 }
 
 void GameScene::Update() {
 	// 自キャラの更新
-	player_->Update();
+	player_->Update(viewProjection_);
 
 	//敵
 	bullets_.remove_if([](EnemyBullet* bullet) {
@@ -172,7 +175,7 @@ void GameScene::Draw() {
 	for (EnemyBullet* bullet : bullets_) {
 		    bullet->Draw(viewProjection_);
 	}
-
+	
 	//天球の描画
 	skydome_->Draw(viewProjection_);
 
@@ -187,6 +190,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	player_->DrawUI();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

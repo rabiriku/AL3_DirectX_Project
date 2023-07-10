@@ -32,7 +32,7 @@ void PlayerBullet::OnCollision() { isDead_ = true; }
 
 Vector3 PlayerBullet::GetworldPosition() {
 	// ワールド座標を入れる変数
-	Vector3 worldPos;
+	Vector3 worldPos = {};
 
 	worldPos.x = worldTransform_.translation_.x;
 	worldPos.y = worldTransform_.translation_.y;

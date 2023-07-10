@@ -62,5 +62,4 @@ public:
 	int32_t pushTimer = 0;
 	const float radius_ = 1.0f;
 	
-
 };

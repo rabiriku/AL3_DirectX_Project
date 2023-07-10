@@ -11,6 +11,8 @@
 #include "PlayerBullet.h"
 #include <list>
 #include "MathUtility.h"
+#include "Sprite.h"
+#include "WinApp.h"
 
 class Player {
 public:
@@ -22,7 +24,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(ViewProjection& viewProjection);
 
 	/// <summary>
 	/// 描画
@@ -33,7 +35,7 @@ public:
 	/// 攻撃
 	/// </summary>
 	void Attack();
-
+	
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -45,6 +47,8 @@ public:
 	//position取得
 	Vector3 GetworldPosition();
 
+	Vector3 GetWorldTransform3DReticle();
+
 	//衝突を検知したら呼び出される
 	void OnCollision();
 
@@ -54,9 +58,12 @@ public:
 
 	const std::list<PlayerBullet*>& GetBullrts() const { return bullets_; }
 
-
+	void DrawUI();
 	// ワールド変換データ
 	WorldTransform worldTransform_;
+
+	//3Dレティクル用ワールドトランスフォーム
+	WorldTransform worldTransform3DReticle_;
 
 	// モデル
 	Model* model_ = nullptr;
@@ -71,4 +78,7 @@ public:
 	PlayerBullet* bullet_ = nullptr;
 	
 	const float radius_ = 1.0f;
+
+	// 2Dレティクル用スプライト
+	Sprite* sprite2DReticle_ = nullptr;
 };
