@@ -79,4 +79,6 @@ private: // メンバ変数
 
 	// デバックカメラ有効
 	bool isDebugCameraActive_ = false;
+
+	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 };

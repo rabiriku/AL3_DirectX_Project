@@ -11,8 +11,9 @@
 #include "PlayerBullet.h"
 #include <list>
 #include "MathUtility.h"
+#include"Collider.h"
 
-class Player {
+class Player : public Collider{
 public:
 	/// <summary>
 	/// 初期化
@@ -43,17 +44,18 @@ public:
 	std::list<PlayerBullet*> bullets_;
 
 	//position取得
-	Vector3 GetworldPosition();
+	Vector3 GetworldPosition() override;
 
 	//衝突を検知したら呼び出される
-	void OnCollision();
-
+	void OnCollision() override;
+	
 	
 	const float GetRadius() { return radius_; }
 
 	const std::list<PlayerBullet*>& GetBullrts() const { return bullets_; }
 
 
+	
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 

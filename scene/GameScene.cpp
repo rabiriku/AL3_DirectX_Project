@@ -204,3 +204,8 @@ void GameScene::CheckAllCollisions() {
 #pragma endregion
 }
 
+void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB) {
+
+
+}
+
