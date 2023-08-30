@@ -4,7 +4,7 @@
 
 void PlayerBullet::Initialize(Model* model, const Vector3& pos, const Vector3& velocity) {
 	assert(model);
-	model_ = model;
+	model_ = Model::CreateFromOBJ("weapon", true);
 
 	texturehandle_ = TextureManager::Load("white1x1.png");
 

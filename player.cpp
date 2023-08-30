@@ -8,24 +8,29 @@ Player::~Player() {
 		delete bullet;
 	}
 
+	for (Player* player : player_) {
+		delete player;
+	}
+
 	delete sprite2DReticle_;
 }
 
 
 
-void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 playerPosition) {
+void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosition) {
 	// NULLポインタチェック
 	assert(model);
 
 	// 受け渡し
 	model_ = model;
-	textureHandle_ = textureHandle;
 
+	textureHandle_ = textureHandle;
 	// ワールド初期化
 	worldTransform_.Initialize();
 
 	// シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+	audio_ = Audio::GetInstance();
 
 	worldTransform_.translation_.x = playerPosition.x;
 	worldTransform_.translation_.y = playerPosition.y;
@@ -36,9 +41,20 @@ void Player::Initialize(Model* model, uint32_t textureHandle,Vector3 playerPosit
 	// レティクル用テクスチャ取得
 	uint32_t textureReticle_ = TextureManager::Load("target.png");
 
+	uint32_t hptexturehandle_ = TextureManager::Load("heart.png");
+
 	// スプライト生成
 	sprite2DReticle_ = Sprite::Create(textureReticle_, {640, 360}, {1, 1, 1, 1}, {0.5f, 0.5f});
+	playerHpsprite_ = Sprite::Create(hptexturehandle_, {0, 650});
+	playerHpsprite2_ = Sprite::Create(hptexturehandle_, {60, 650});
+	playerHpsprite3_ = Sprite::Create(hptexturehandle_, {120, 650});
+	playerHpsprite4_ = Sprite::Create(hptexturehandle_, {180, 650});
+	playerHpsprite5_ = Sprite::Create(hptexturehandle_, {240, 650});
+
+	// サウンド読み込み
+	damagesound_ = audio_->LoadWave("short_bomb.wav");
 }
+
 
 Vector3 Player::GetworldPosition() {
 
@@ -52,7 +68,10 @@ Vector3 Player::GetworldPosition() {
 }
 
 
-void Player::OnCollision() {}
+void Player::OnCollision() { 
+	playerHp -= 1.0; 
+	audio_->PlayWave(damagesound_);
+}
 
 Vector3 Player::GetWorldTransform3DReticle() {
 	Vector3 worldPos = {};
@@ -65,7 +84,25 @@ Vector3 Player::GetWorldTransform3DReticle() {
 // 親子関係
 void Player::SetParent(const WorldTransform* parent) { worldTransform_.parent_ = parent; }
 
-void Player::DrawUI() { sprite2DReticle_->Draw(); }
+void Player::DrawUI() {
+	sprite2DReticle_->Draw(); 
+	if (playerHp > 0) {
+		playerHpsprite_->Draw();
+	} 
+	if (playerHp > 1) {
+		playerHpsprite2_->Draw();
+	} 
+	if (playerHp > 2) {
+		playerHpsprite3_->Draw();
+	} 
+	if (playerHp > 3) {
+		playerHpsprite4_->Draw();
+	} 
+	if (playerHp>4){
+		playerHpsprite5_->Draw();
+	}
+	
+}
 
 
 void Player::Update(ViewProjection& viewProjection) {
@@ -77,29 +114,35 @@ void Player::Update(ViewProjection& viewProjection) {
 		return false;
 	});
 
+
+	if (playerHp <= 0) {
+		isDead_ = true;
+	}
+	
+	
 	// キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 	// キャラクターの移動速さ
 	const float kCharacterSpeed = 0.4f;
 	// 押した方向で移動ベクトルを変更(左右)
-	if (input_->PushKey(DIK_LEFT)) {
+	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_RIGHT)) {
+	} else if (input_->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
-	} else if (input_->PushKey(DIK_UP)) {
+	} else if (input_->PushKey(DIK_W)) {
 		move.y += kCharacterSpeed;
-	} else if (input_->PushKey(DIK_DOWN)) {
+	} else if (input_->PushKey(DIK_S)) {
 		move.y -= kCharacterSpeed;
 	}
 
 	// 旋回
-	const float matRotSpeed = 0.02f;
-	if (input_->PushKey(DIK_A)) {
-		worldTransform_.rotation_.y -= matRotSpeed;
-	}
-	if (input_->PushKey(DIK_D)) {
-		worldTransform_.rotation_.y += matRotSpeed;
-	}
+	//const float matRotSpeed = 0.02f;
+	//if (input_->PushKey(DIK_A)) {
+	//	worldTransform_.rotation_.y -= matRotSpeed;
+	//}
+	//if (input_->PushKey(DIK_D)) {
+	//	worldTransform_.rotation_.y += matRotSpeed;
+	//}
 
 	// 攻撃
 	Attack();
@@ -208,7 +251,10 @@ void Player::Update(ViewProjection& viewProjection) {
 	float sliderValue[3] = {
 	    worldTransform_.translation_.x, worldTransform_.translation_.y,
 	    worldTransform_.translation_.z};
+
 	ImGui::SliderFloat3("position", sliderValue, -20.0f, 20.0f);
+	ImGui::SliderFloat("hp", &playerHp, 0.f, 10.0f);
+	//ImGui::Sliderbool("isDead", &isDead_, 0.f, 10.0f);
 	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
 	ImGui::End();
 #endif // DEBUG
@@ -217,9 +263,9 @@ void Player::Update(ViewProjection& viewProjection) {
 
 
 void Player::Draw(ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	model_->Draw(worldTransform_, viewProjection);
 
-	model_->Draw(worldTransform3DReticle_, viewProjection, textureHandle_);
+	model_->Draw(worldTransform3DReticle_, viewProjection);
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
@@ -249,6 +295,16 @@ void Player::Attack() {
 		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}
+}
+
+void Player::reset() {
+
+
+	playerHp = 5.0f;
+
+	isDead_ = false;
+
+
 }
 
 

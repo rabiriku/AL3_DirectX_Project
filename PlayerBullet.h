@@ -19,7 +19,7 @@ public:
 
 private:
 	WorldTransform worldTransform_;
-	Model* model_;
+	Model* model_ = nullptr;
 	uint32_t texturehandle_;
 	Vector3 velocity_;
 	static const int32_t kLifeTime = 60 * 5;

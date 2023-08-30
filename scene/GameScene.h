@@ -58,6 +58,20 @@ public: // メンバ関数
 
 	void UpdateEnemyPopCommands();
 
+
+
+	enum class Scene
+		{ title,
+		GamePlay,
+		GameClear,
+		GameOver};
+	
+	//void SceneChange(Scene scene);
+	
+	Scene scene_ = Scene::title;
+	
+
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -83,6 +97,14 @@ private: // メンバ変数
 	// デバックカメラ
 	DebugCamera* debugCamera_ = nullptr;
 
+	//シーン切り替え
+
+	Sprite* titlesprite_ = nullptr;
+
+	Sprite* gameoversprite_ = nullptr;
+
+	Sprite* gameclearsprite_ = nullptr;
+	
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
@@ -90,6 +112,13 @@ private: // メンバ変数
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
+	uint32_t titletextureHandle_ = 0;
+
+	uint32_t gameovertextureHandle_ = 0;
+
+	uint32_t gamecleartextureHandle_ = 0;
+
+	
 	//WorldTransform worldTransform_;
 
 	// ワールドトランスフォーム
@@ -113,4 +142,9 @@ private: // メンバ変数
 
 	// 待機タイマー
 	int waitTimer_ = 0;
+
+
+	int clearTimer_ = 600;
+
+	bool Isdeath_ = false;
 };

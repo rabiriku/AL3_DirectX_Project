@@ -8,9 +8,14 @@
 
 void Enemy::Initialize(Model* model, const Vector3& pos) {
 	assert(model);
-	model_ = model;
+	model_ = Model::CreateFromOBJ("enemy", true);
+
+	audio_ = Audio::GetInstance();
+
 	worldTransform_.Initialize();
-	texturehandle_ = TextureManager::Load("sample.png");
+	//texturehandle_ = TextureManager::Load("white1x1.png");
+	//  サウンド読み込み
+	enemygamagesound = audio_->LoadWave("short_bomb.wav");
 
 	Vector3 Pos = {pos.x, pos.y, pos.z};
 	worldTransform_.translation_ = pos;
@@ -20,13 +25,6 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 
 void Enemy::Update() {
 	
-	//bullets_.remove_if([](EnemyBullet* bullet) {
-	//	if (bullet->IsDead()) {
-	//		delete bullet;
-	//		return true;
-	//	}
-	//	return false;
-	//});
 
 	pushTimer--;
 	if (pushTimer <= 0) {
@@ -34,9 +32,6 @@ void Enemy::Update() {
 		pushTimer = kFireInterval;
 	}
 
-	//for (EnemyBullet* bullet : bullets_) {
-	//	bullet->Update();
-	//}
 
 	const float KCharaSpeed = -0.2f;
 	worldTransform_.UpdateMatrix();
@@ -50,9 +45,11 @@ void Enemy::Update() {
 		worldTransform_.translation_.z += KCharaSpeed;
 
 		if (worldTransform_.translation_.z < 50.0f) {
-			phase_ = Phase::Leave;
+			isDead_ = true;
+			
 		}
 		
+
 		break;
 
 	case Phase::Leave:
@@ -65,12 +62,14 @@ void Enemy::Update() {
 
 		break;
 	}
-	
+
 }
 
 void Enemy::Draw(ViewProjection& view) { 
-	model_->Draw(worldTransform_, view, texturehandle_);
+	model_->Draw(worldTransform_, view);
 
+
+	
 	//for ( EnemyBullet* bullet : bullets_) {
 	//	bullet->Draw(view);
 	//}
@@ -119,7 +118,12 @@ Vector3 Enemy::GetworldPosition() {
 
 	return worldPos;
 }
-void Enemy::OnCollision() {}
+void Enemy::OnCollision() {
+	
+	isDead_ = true;
+	audio_->PlayWave(enemygamagesound);
+
+}
 
 //Enemy::~Enemy() {
 //	for (EnemyBullet* bullet : bullets_) {

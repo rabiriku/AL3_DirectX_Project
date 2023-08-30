@@ -6,7 +6,7 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-
+#include "Audio.h"
 #include "Input.h"
 #include "PlayerBullet.h"
 #include <list>
@@ -35,6 +35,13 @@ public:
 	/// 攻撃
 	/// </summary>
 	void Attack();
+
+	void reset();
+	
+	bool Hpparo() const { return playerHp; }
+
+	bool IsDead() const { return isDead_; }
+
 	
 	/// <summary>
 	/// デストラクタ
@@ -42,6 +49,7 @@ public:
 	~Player();
 
 	//リスト化
+	std::list<Player*> player_;
 	std::list<PlayerBullet*> bullets_;
 
 	//position取得
@@ -59,6 +67,8 @@ public:
 	const std::list<PlayerBullet*>& GetBullrts() const { return bullets_; }
 
 	void DrawUI();
+
+	//void DrawHp();
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 
@@ -74,6 +84,8 @@ public:
 	// キーボード入力
 	Input* input_ = nullptr;
 
+	Audio* audio_ = nullptr;
+
 	// 弾
 	PlayerBullet* bullet_ = nullptr;
 	
@@ -81,4 +93,16 @@ public:
 
 	// 2Dレティクル用スプライト
 	Sprite* sprite2DReticle_ = nullptr;
+
+	Sprite* playerHpsprite_ = nullptr;
+	Sprite* playerHpsprite2_ = nullptr;
+	Sprite* playerHpsprite3_ = nullptr;
+	Sprite* playerHpsprite4_ = nullptr;
+	Sprite* playerHpsprite5_ = nullptr;
+
+	uint32_t damagesound_ = 0;
+
+	float playerHp = 5.0f;
+
+	bool isDead_ = false;
 };

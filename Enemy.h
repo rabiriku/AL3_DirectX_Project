@@ -3,7 +3,7 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-
+#include "Audio.h"
 #include "Input.h"
 #include "EnemyBullet.h"
 #include <list>
@@ -36,7 +36,7 @@ public:
 
 	~Enemy();
 
-	static const int kFireInterval = 60;
+	static const int kFireInterval = 80;
 	//接近
 	void Approach();
 
@@ -53,13 +53,22 @@ public:
 	GameScene* gameScene_ = nullptr;
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
+	bool IsDead() const { return isDead_; }
+
 	private:
 	WorldTransform worldTransform_;
 	Model* model_;
 	uint32_t texturehandle_ = 0u;
 	EnemyBullet* bullet_ = nullptr;
+	Audio* audio_ = nullptr;
+
+
 	//std::list<EnemyBullet*> bullets_;
 	int32_t pushTimer = 0;
 	const float radius_ = 1.0f;
-	
+	bool isDead_ = false;
+	static const int32_t kLifeTime = 60 * 5;
+	int32_t deathTimer_ = kLifeTime;
+	int32_t enemygamagesound = 0;
+
 };
