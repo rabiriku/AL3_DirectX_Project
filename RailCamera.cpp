@@ -50,7 +50,7 @@ void RailCamera::Update() {
 
 	
 
-
+	#ifdef _DEBUG
 	// カメラの座標を画面表示する処理
 	ImGui::Begin("Camera");
 	// スライダーでカメラのtranslationを表示
@@ -60,4 +60,5 @@ void RailCamera::Update() {
 	ImGui::DragFloat3("move", &move.x, 0.01f);
 	//ImGui::DragFloat3("num", &num, 0.f);
 	ImGui::End();
+#endif
 }

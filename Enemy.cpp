@@ -8,6 +8,8 @@
 
 void Enemy::Initialize(Model* model, const Vector3& pos) {
 	assert(model);
+	model_ = model;
+
 	model_ = Model::CreateFromOBJ("enemy", true);
 
 	audio_ = Audio::GetInstance();

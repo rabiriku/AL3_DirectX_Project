@@ -52,7 +52,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosi
 	playerHpsprite5_ = Sprite::Create(hptexturehandle_, {240, 650});
 
 	// サウンド読み込み
-	damagesound_ = audio_->LoadWave("short_bomb.wav");
+	damagesound_ = audio_->LoadWave("playerhit.wav");
 }
 
 

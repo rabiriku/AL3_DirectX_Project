@@ -4,10 +4,12 @@
 void EnemyBullet::Initialize(Model* model, const Vector3& pos, const Vector3& velocity) 
 {
 	assert(model);
-	model_ = Model::CreateFromOBJ("weapon", true);
+	model_ = model;
+
+	model_ = Model::CreateFromOBJ("bullet", true);
 
 
-	texturehandle_ = TextureManager::Load("uvChecker.png");
+	texturehandle_ = TextureManager::Load("bullet/bullet.png");
 
 	 worldTransform_.Initialize();
 	 worldTransform_.translation_ = pos;
@@ -27,7 +29,7 @@ void EnemyBullet::Update() {
 }
 
 void EnemyBullet::Draw(ViewProjection& view) {
-	model_->Draw(worldTransform_, view);
+	model_->Draw(worldTransform_, view,texturehandle_);
 }
 
 Vector3 EnemyBullet::GetworldPosition() {

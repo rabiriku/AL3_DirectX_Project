@@ -20,9 +20,9 @@ class EnemyBullet {
 
 private:
 	WorldTransform worldTransform_;
-	Model* model_;
-	uint32_t texturehandle_;
-	Vector3 velocity_;
+	Model* model_=nullptr;
+	uint32_t texturehandle_=0;
+	Vector3 velocity_ = {};
 	static const int32_t kLifeTime = 60 * 5;
 	int32_t deathTimer_ = kLifeTime;
 	bool isDead_ = false;

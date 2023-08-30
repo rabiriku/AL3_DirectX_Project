@@ -62,6 +62,7 @@ public: // メンバ関数
 
 	enum class Scene
 		{ title,
+		Explanation,
 		GamePlay,
 		GameClear,
 		GameOver};
@@ -105,6 +106,7 @@ private: // メンバ変数
 
 	Sprite* gameclearsprite_ = nullptr;
 	
+	Sprite* explanationsprite_ = nullptr;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
@@ -118,7 +120,7 @@ private: // メンバ変数
 
 	uint32_t gamecleartextureHandle_ = 0;
 
-	
+	uint32_t explanationtextureHandle_ = 0;
 	//WorldTransform worldTransform_;
 
 	// ワールドトランスフォーム

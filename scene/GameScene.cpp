@@ -43,6 +43,8 @@ void GameScene::Initialize() {
 
 	gamecleartextureHandle_ = TextureManager::Load("gameclear.png");
 
+	explanationtextureHandle_= TextureManager::Load("explanation.png");
+
 	 
 	// 3Dモデルの生成
 	model_ = Model::CreateFromOBJ("player", true);
@@ -52,6 +54,8 @@ void GameScene::Initialize() {
 	gameclearsprite_ = Sprite::Create(gamecleartextureHandle_, {0, 0});
 
 	gameoversprite_ = Sprite::Create(gameovertextureHandle_, {0, 0});
+
+	explanationsprite_ = Sprite::Create(explanationtextureHandle_, {0, 0});
 
 	// ワールドトランスフォーム初期化
 	// worldTransform_.Initialize();
@@ -88,12 +92,16 @@ void GameScene::Initialize() {
 
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
+#ifdef _DEBUG
+
+
 
 	// 軸方向表示の表示を有効にする
 	AxisIndicator::GetInstance()->SetVisible(true);
 	// 軸方向表示が参照するビュープロジェクションを指定する（アドレス渡し）
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
+	#endif // !1
 	// レールカメラ生成
 	railcamera_ = new RailCamera();
 	railcamera_->Initialize({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
@@ -115,7 +123,7 @@ void GameScene::Update() {
 	 case Scene::title:
 
 		    if (input_->TriggerKey(DIK_SPACE)) {
-			    scene_ = Scene::GamePlay;
+			    scene_ = Scene::Explanation;
 		    }
 
 			enemyPopCommands.clear();
@@ -125,6 +133,12 @@ void GameScene::Update() {
 		    player_->reset();
 		   
 		    break;
+
+			case Scene::Explanation:
+		    if (input_->TriggerKey(DIK_SPACE)) {
+			    scene_ = Scene::GamePlay;
+		    }
+				break;
 
 	 case Scene::GamePlay:
 
@@ -250,17 +264,6 @@ void GameScene::Draw() {
 
 	// 自キャラの描画
 
-	//switch (scene_) {
-	//
-	//case GameScene::Scene::title:
-	//
-	// // コマンドリストの取得
-	//
-	// break;
-	//
-	//case GameScene::Scene::GamePlay:
-
-
 	player_->Draw(viewProjection_);
 	 
 	 // 敵キャラの描画
@@ -291,6 +294,10 @@ void GameScene::Draw() {
 
 	 if (scene_ == Scene::title) {
 			titlesprite_->Draw();
+	 }
+
+	 if (scene_ == Scene::Explanation) {
+		    explanationsprite_->Draw();
 	 }
 
 	 if (scene_ == Scene::GameClear) {
